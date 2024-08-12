@@ -10,7 +10,6 @@ central.get('/', (req , res) => {
     res.send('Hello World!')
     console.log(`GET Status from path "/": ${res.statusCode}`);
   });
-  ll
 
 central.post("/api/upload",(req , res) =>{
     let recievingData = req.body
