@@ -14,7 +14,8 @@ central.get('/', (req , res) => {
 central.post("/api/upload",(req , res) =>{
     let recievingData = req.body
     res.send(`${res.statusCode}`)
-    console.log("Recieved")
+    
+    console.log(`Recieved http://${IP}:${PORT}/api/upload ${res.statusCode}`)
   })
 central.listen(PORT, IP , ()=>{
     console.log(`connecting to http://${IP}:${PORT}`)
