@@ -17,5 +17,5 @@ central.post("/api/upload",(req , res) =>{
     console.log("Recieved")
   })
 central.listen(PORT, IP , ()=>{
-    console.log("JA")
+    console.log(`connecting to http://${IP}:${PORT}`)
 })
