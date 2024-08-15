@@ -5,8 +5,8 @@ config()
 //-------------------------------------------------
 
 let central = express()
-let IP = process.env.HOST  || "1.0.0.0"
-let PORT = process.env.PORT || 11233
+let IP = process.env.HOST  || "192.168.104.51"
+let PORT = process.env.PORT || 11112
 
 central.get('/', (req , res) => {
     res.send('Hello World!')
