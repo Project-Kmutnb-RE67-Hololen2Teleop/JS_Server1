@@ -1,10 +1,11 @@
 import express from 'express';
 import { config } from 'dotenv'
 import Log from "./utils/function/Logging_msg.js"
-import axios from 'axios';
 config()
+//-------------------------------------------------
+
 let central = express()
-let IP = process.env.HOST   || "0.0.0.0"
+let IP = process.env.HOST  || "1.0.0.0"
 let PORT = process.env.PORT || 11233
 
 central.get('/', (req , res) => {
