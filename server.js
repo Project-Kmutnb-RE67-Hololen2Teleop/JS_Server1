@@ -20,6 +20,7 @@ server.get('/',(req,res) =>{
   res.send('Welcome to My Server')
   console.log(`Status ${res.statusCode}`) ; 
 });
+
 server.listen(PORT, IP , ()=>{
   console.log(`Initialize with http://${IP}:${PORT}`) ; 
 })
