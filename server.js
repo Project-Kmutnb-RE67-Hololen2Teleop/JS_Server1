@@ -1,6 +1,6 @@
 import express from 'express';
 import { config } from 'dotenv'
-import axios from 'axios';
+
 config()
 let central = express()
 let IP = process.env.HOST   || "0.0.0.0"
@@ -17,5 +17,5 @@ central.post("/api/upload",(req , res) =>{
     console.log("Recieved")
   })
 central.listen(PORT, IP , ()=>{
-    console.log("JA")
+    console.log(`Initialize with http://${IP}:${PORT}`)
 })
