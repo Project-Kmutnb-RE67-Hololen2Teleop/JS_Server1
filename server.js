@@ -12,6 +12,7 @@ let IP = process.env.HOST   || "0.0.0.0"
 let PORT = process.env.PORT || 11233
 
 server.use(cors()) ;
+server.use(express.json());  // Parse JSON body content
 server.use('/pointCloud',PointCloudRouter) ;
 server.use('/Speed',SpeedRouter) ;
 
@@ -22,18 +23,3 @@ server.get('/',(req,res) =>{
 server.listen(PORT, IP , ()=>{
   console.log(`Initialize with http://${IP}:${PORT}`) ; 
 })
-/*
-central.get('/', (req , res) => {
-    res.send('Hello World!')
-    console.log(`GET Status from path "/": ${res.statusCode}`);
-  });
-
-central.post("/api/upload",(req , res) =>{
-    let recievingData = req.body
-    res.send(`${res.statusCode}`)
-    console.log("Recieved")
-  })
-central.listen(PORT, IP , ()=>{
-    console.log(`Initialize with http://${IP}:${PORT}`)
-})
-*/
