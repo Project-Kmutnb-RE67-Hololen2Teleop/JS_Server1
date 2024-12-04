@@ -32,7 +32,8 @@ server.register(PointCloudRouter);
 
 // Basic route
 server.get('/', (request, reply) => {
-  reply.code(200).send({ hello: 'world' });
+  reply.code(200).send("Welcome to mine API server with Fastify");
+  console.log(reply.statusCode)
 });
 
 // Start the server
