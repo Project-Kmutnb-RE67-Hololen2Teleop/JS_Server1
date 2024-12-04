@@ -1,38 +1,70 @@
-import { Router } from "express";
-import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 
-const PointCloudRouter = Router() ;
+// Directory to save uploaded files
+let uploadDirectory = './Picture';
 
-// Set up multer storage configuration
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, './Picture/'); // The folder where files will be saved
-    },
-    filename: (req, file, cb) => {
-      // Set the filename to be the original name of the file
-      cb(null, file.originalname);
-    }
-  });
-// Initialize multer with the storage configuration
-const upload = multer({ storage });
+// Ensure the upload directory exists
+if (!fs.existsSync(uploadDirectory)) {
+    fs.mkdirSync(uploadDirectory, { recursive: true });
+}
 
-// POST route for uploading files
-PointCloudRouter.post('/upload', upload.single('file'), (req, res) => {
-    if (!req.file) {
-      return res.status(400).send('No file uploaded.');
-    }
-  
-    // Access the file through req.file
-    console.log('Uploaded file:', req.file);
-  
-    // Respond with information about the uploaded file
-    res.json({
-      message: 'File uploaded successfully!',
-      file: req.file
+export default function PointCloudRouter(fastify, options, done) {
+    // POST route for uploading files
+    fastify.post('/PointCloud/upload', async (request, reply) => {
+        const parts = request.parts(); // Retrieve the parts from the request (multipart form-data)
+
+        let uploadedFiles = []; // Array to store info about uploaded files
+
+        try {
+            // Loop through the parts (files) and handle them
+            for await (const part of parts) {
+                if (part.file) {
+                    // Handle file upload
+                    const filePath = path.join(uploadDirectory, part.filename);
+                    const writeStream = fs.createWriteStream(filePath);
+
+                    // Pipe the file into the write stream
+                    part.file.pipe(writeStream);
+
+                    // Wait until the file is fully written
+                    await new Promise((resolve, reject) => {
+                        writeStream.on('finish', resolve);
+                        writeStream.on('error', reject);
+                    });
+
+                    // Add file info to uploadedFiles array
+                    uploadedFiles.push({
+                        filename: part.filename,
+                        mimetype: part.mimetype,
+                        size: part.file.byteLength,
+                    });
+
+                    console.log('Uploaded file:', part.filename);
+                } else {
+                    console.log('No file found in part:', part);
+                    return reply.status(400).send('No file uploaded.');
+                }
+            }
+
+            // If there were no files uploaded, send a message
+            if (uploadedFiles.length === 0) {
+                return reply.status(400).send('No files uploaded.');
+            }
+
+            // Respond with the details of the uploaded files
+            return reply.send({
+                message: 'File(s) uploaded successfully!',
+                files: uploadedFiles,
+            });
+        } catch (error) {
+            console.error('Error handling file upload:', error);
+            return reply.status(500).send({
+                message: 'Error handling file upload.',
+                error: error.message,
+            });
+        }
     });
-  });
 
-
-
-export default PointCloudRouter;
+    done(); // Signal that the route definitions are complete
+}
