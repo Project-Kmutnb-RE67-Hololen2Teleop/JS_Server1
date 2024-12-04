@@ -1,91 +1,30 @@
-import { createSecureServer } from 'node:http2';
-import { readFileSync } from 'node:fs';
+import { readFileSync } from 'fs'
+import fastify from 'fastify';
+import { config } from 'dotenv';
 
-const server = createSecureServer({
-  key: readFileSync('private.key'),
-  cert: readFileSync('certificate.crt'),
+
+config();
+const IP = process.env.HOST             || "0.0.0.0" ;
+const PORT = process.env.PORT_SERVER2   || 11111;
+const server = fastify({
+  http2: true,
+  https: {
+    allowHTTP1: true, // fallback support for HTTP1
+    key: readFileSync('./private.key'),
+    cert: readFileSync('./certificate.crt')
+  }
 });
 
-// ใช้ Map สำหรับเก็บเส้นทาง (routes) และ handler
-let data = {
-    "tester" : 1
-}
-
-// ฟังก์ชันสำหรับจัดการ GET requests
-function handleGET(stream, path) {
-  if (path === '/') {
-    stream.respond({
-      'content-type': 'application/json',
-      ':status': 200,
-    });
-    stream.end(JSON.stringify(data));
-  } else {
-    stream.respond({
-      'content-type': 'application/json',
-      ':status': 404,
-    });
-    stream.end(JSON.stringify({ message: 'Not Found' }));
-  }
-}
-
-// ฟังก์ชันสำหรับจัดการ POST requests
-function handlePOST(stream, path, body) {
-  if (path === '/submit') {
-    stream.respond({
-      'content-type': 'application/json',
-      ':status': 200,
-    });
-    data = body ;
-    stream.end(JSON.stringify({ message: 'Data received', data: body }));
-  } else {
-    stream.respond({
-      'content-type': 'application/json',
-      ':status': 404,
-    });
-    stream.end(JSON.stringify({ message: 'Not Found' }));
-  }
-}
-
-// ฟังก์ชันสำหรับการตรวจสอบและประมวลผล requests
-server.on('stream', (stream, headers) => {
-  const path = headers[':path']; // Path ของ request
-  const method = headers[':method']; // HTTP method (GET, POST, etc.)
-  let body = '';
-
-  // อ่านข้อมูลจาก request
-  stream.on('data', chunk => {
-    body += chunk;
-  });
-
-  stream.on('end', () => {
-    // ถ้าเป็น GET request
-    if (method === 'GET') {
-      handleGET(stream, path);
-    }
-    // ถ้าเป็น POST request
-    else if (method === 'POST') {
-      try {
-        body = JSON.parse(body); // พยายามแปลง body เป็น JSON
-        handlePOST(stream, path, body);
-      } catch (error) {
-        stream.respond({
-          'content-type': 'application/json',
-          ':status': 400,
-        });
-        stream.end(JSON.stringify({ message: 'Invalid JSON' }));
-      }
-    }
-    // หากไม่ได้กำหนด method หรือ path ไม่ตรง
-    else {
-      stream.respond({
-        'content-type': 'application/json',
-        ':status': 405,
-      });
-      stream.end(JSON.stringify({ message: 'Method Not Allowed' }));
-    }
-  });
+// this route can be accessed through both protocols
+server.get('/', function (request, reply) {
+  reply.code(200).send({ hello: 'world' });
 });
 
-server.listen(8443, () => {
-  console.log('Server running at https://localhost:8443');
+// Fix here: specify host and port correctly
+server.listen({ host: IP, port: PORT }, (err, address) => {
+  if (err) {
+    console.error(err);
+    process.exit(1);
+  }
+  console.log(`Server running at ${address}`);
 });
