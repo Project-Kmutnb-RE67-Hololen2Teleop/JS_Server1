@@ -9,7 +9,7 @@ import PointCloudRouter from './Routes/pointcloud.js';
 config()
 let server = express()
 let IP = process.env.HOST   || "0.0.0.0"
-let PORT = process.env.PORT || 11233
+let PORT = process.env.PORT_MAIN || 11233
 
 server.use(cors()) ;
 server.use(express.json());  // Parse JSON body content
