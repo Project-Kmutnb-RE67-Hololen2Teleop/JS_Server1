@@ -7,7 +7,7 @@ const PointCloudRouter = Router() ;
 // Set up multer storage configuration
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, './PointCloudPic/'); // The folder where files will be saved
+      cb(null, './Picture/'); // The folder where files will be saved
     },
     filename: (req, file, cb) => {
       // Set the filename to be the original name of the file
