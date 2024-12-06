@@ -66,5 +66,20 @@ export default function PointCloudRouter(fastify, options, done) {
         }
     });
 
+    // GET route for downloading files manually
+    fastify.get('/PointCloud/download/:filename', (request, reply) => {
+        const { filename } = request.params;
+        const filePath = path.join(uploadDirectory, filename);
+
+        if (fs.existsSync(filePath)) {
+            // Manually send the file content
+            const fileStream = fs.createReadStream(filePath);
+            reply.type('application/octet-stream'); // Set appropriate MIME type
+            fileStream.pipe(reply.raw); // Pipe the file to the response stream
+        } else {
+            return reply.status(404).send('File not found');
+        }
+    });
+
     done(); // Signal that the route definitions are complete
 }
