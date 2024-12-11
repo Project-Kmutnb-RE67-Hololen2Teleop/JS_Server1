@@ -76,6 +76,7 @@ export default function PointCloudRouter(fastify, options, done) {
             const fileStream = fs.createReadStream(filePath);
             reply.type('application/octet-stream'); // Set appropriate MIME type
             fileStream.pipe(reply.raw); // Pipe the file to the response stream
+            console.log('succesfull_transfer:', filePath);
         } else {
             return reply.status(404).send('File not found');
         }
