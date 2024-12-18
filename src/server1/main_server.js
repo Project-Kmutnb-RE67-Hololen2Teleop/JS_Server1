@@ -45,7 +45,7 @@ wss.on('connection', (ws) => {
       expectedSize = data.readUInt32BE(0);
       console.log(`Expecting image of size: ${expectedSize} bytes`);
     } else {
-      // ต่อ buffer
+      // ต่อ buffer   buffer == image file
       buffer = Buffer.concat([buffer, data]);
       
       if (buffer.length >= expectedSize) {
