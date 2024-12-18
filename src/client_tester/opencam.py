@@ -40,9 +40,9 @@ def send_frames():
     # Frame parameters
     target_width = 480  # Smaller size for faster processing
     target_height = 480
-    jpeg_quality = 80  # Lower quality for faster encoding
+    jpeg_quality = 60  # Lower quality for faster encoding
     fps_limit = 30
-    frame_delay = 1.0 / fps_limit
+    frame_delay = 1/fps_limit
 
     last_time = time.time()
 
@@ -71,8 +71,8 @@ def send_frames():
         frame_count += 1
         current_time = time.time()
         elapsed = current_time - last_time
-        if elapsed < frame_delay:
-            time.sleep(frame_delay)
+        
+        time.sleep(frame_delay)
         last_time = current_time
 
         # Print FPS every second
