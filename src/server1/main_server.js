@@ -3,9 +3,11 @@ import fastify from 'fastify';
 import { readFileSync } from 'fs';
 import { config } from 'dotenv';
 import sharp from 'sharp';
-import fs from 'fs'
-import SpeedRouter from './Routes/speed.js';
+import fs from 'fs';
+import SpeedRouter from './Routes/Speed.js';
 import PointCloudRouter from './Routes/pointcloud.js';
+import { PostDataIMG } from './Routes/2Dimage.js';
+import ImagesStream from './Routes/2Dimage.js';
 config(); // โหลด environment variables
 let frameCount = 0;
 let startTime = Date.now();
@@ -50,7 +52,7 @@ wss.on('connection', (ws) => {
       
       if (buffer.length >= expectedSize) {
         console.log(`Image received! Size: ${buffer.length} bytes`);
-
+        PostDataIMG(buffer) ;
         // Decode JPEG image and save it
         const fileName = `image.jpg`;
         fs.writeFileSync(fileName, buffer);
@@ -73,6 +75,7 @@ wss.on('connection', (ws) => {
 
 server.register(SpeedRouter);
 server.register(PointCloudRouter);
+server.register(ImagesStream)
 // Start Fastify Server
 const startServer = async () => {
   try {
