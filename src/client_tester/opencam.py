@@ -7,7 +7,7 @@ import ssl
 import threading
 
 # Define server address
-SERVER_ADDRESS = "wss://127.0.0.1:12345"  # Replace with your server's address
+SERVER_ADDRESS = "wss://192.168.0.185:12345"  # Replace with your server's address
 
 # Initialize camera
 camera = cv2.VideoCapture(0)
@@ -38,10 +38,13 @@ def send_frames():
     start_time = time.time()
 
     # Frame parameters
-    target_width = 320  # Resize width to reduce size
-    target_height = 320  # Resize height to reduce size
-    jpeg_quality = 100  # JPEG quality (lower is higher compression)
-    fps_limit = 30  # Limit FPS to 15 frames per second
+    target_width = 480  # Smaller size for faster processing
+    target_height = 480
+    jpeg_quality = 80  # Lower quality for faster encoding
+    fps_limit = 30
+    frame_delay = 1.0 / fps_limit
+
+    last_time = time.time()
 
     while True:
         ret, frame = camera.read()
@@ -52,12 +55,11 @@ def send_frames():
         # Resize frame
         frame = cv2.resize(frame, (target_width, target_height))
 
-        # Encode frame as JPEG with compression quality
+        # Encode frame as JPEG
         encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), jpeg_quality]
         success, buffer = cv2.imencode('.jpg', frame, encode_param)
         if success:
             try:
-                # Send size before sending image data
                 size = len(buffer)
                 ws.send(size.to_bytes(4, byteorder="big"), opcode=websocket.ABNF.OPCODE_BINARY)
                 ws.send(buffer.tobytes(), opcode=websocket.ABNF.OPCODE_BINARY)
@@ -65,18 +67,20 @@ def send_frames():
                 print(f"Error sending frame: {e}")
                 break
 
-        # Calculate FPS and control the frame rate
+        # Calculate FPS and delay
         frame_count += 1
-        elapsed_time = time.time() - start_time
-        if elapsed_time >= 1.0:
-            fps = frame_count / elapsed_time
+        current_time = time.time()
+        elapsed = current_time - last_time
+        if elapsed < frame_delay:
+            time.sleep(frame_delay)
+        last_time = current_time
+
+        # Print FPS every second
+        if time.time() - start_time >= 1.0:
+            print(f"FPS: {frame_count}")
             frame_count = 0
             start_time = time.time()
-            print(fps)
-            # Limit FPS by adding sleep
-            if fps > fps_limit:
-                time.sleep(1 / fps_limit)
-        time.sleep(0.02)
+
         # Break if 'q' is pressed
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
