@@ -7,7 +7,7 @@ import ssl
 import threading
 
 # Define server address
-SERVER_ADDRESS = "wss://192.168.0.185:12345"  # Replace with your server's address
+SERVER_ADDRESS = "wss://192.168.1.105:12345"  # Replace with your server's address
 
 # Initialize camera
 camera = cv2.VideoCapture(0)
@@ -38,9 +38,9 @@ def send_frames():
     start_time = time.time()
 
     # Frame parameters
-    target_width = 480  # Smaller size for faster processing
+    target_width = 720  # Smaller size for faster processing
     target_height = 480
-    jpeg_quality = 60  # Lower quality for faster encoding
+    jpeg_quality = 100  # Lower quality for faster encoding
     fps_limit = 30
     frame_delay = 1/fps_limit
 
