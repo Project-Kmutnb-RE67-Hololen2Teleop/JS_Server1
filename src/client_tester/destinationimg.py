@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 
 # Define the API endpoint
-url = "https://192.168.1.105:12345/2D_images"  # Replace with your actual endpoint
+url = "https://172.20.10.2:12345/2D_images"  # Replace with your actual endpoint
 
 # Fetch image buffer from the endpoint
 with httpx.Client(http2=True, verify=False) as client:

@@ -8,6 +8,7 @@ import SpeedRouter from './Routes/Speed.js';
 import PointCloudRouter from './Routes/pointcloud.js';
 import { PostDataIMG } from './Routes/2Dimage.js';
 import ImagesStream from './Routes/2Dimage.js';
+import ControlJoint from './Routes/Manipulator.js';
 config(); // โหลด environment variables
 let frameCount = 0;
 let startTime = Date.now();
@@ -75,7 +76,8 @@ wss.on('connection', (ws) => {
 
 server.register(SpeedRouter);
 server.register(PointCloudRouter);
-server.register(ImagesStream)
+server.register(ImagesStream);
+server.register(ControlJoint);
 // Start Fastify Server
 const startServer = async () => {
   try {
