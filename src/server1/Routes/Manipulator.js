@@ -29,6 +29,7 @@ export default function ControlJoint(fastify,options,done){
                 Joint_all.j6 = data.j6
                 Joint_all.speed = data.speed
                 console.log(`Status-Manipulator: ${reply.statusCode}`);
+                console.table(Joint_all)
                 return reply.code(200).send({ message: 'Movement joint set successfully' });
             default:
                 console.log('Missing Argument')
