@@ -6,7 +6,8 @@ let Joint_all = {
     "j4":0.0,
     "j5":0.0,
     "j6":0.0,
-    "speed":0
+    "speed":0,
+    "gripper":true
 };
 
 
@@ -28,6 +29,7 @@ export default function ControlJoint(fastify,options,done){
                 Joint_all.j5 = data.j5
                 Joint_all.j6 = data.j6
                 Joint_all.speed = data.speed
+                Joint_all.gripper = data.gripper
                 console.log(`Status-Manipulator: ${reply.statusCode}`);
                 console.table(Joint_all)
                 return reply.code(200).send({ message: 'Movement joint set successfully' });
