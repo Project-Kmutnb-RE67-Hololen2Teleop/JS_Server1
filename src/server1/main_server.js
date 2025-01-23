@@ -15,7 +15,7 @@ let frameCount = 0;
 let startTime = Date.now();
 const IP = process.env.HOST || '0.0.0.0';
 const PORT = process.env.PORT_MAIN || 11111;
-const HTTP_PORT = process.env.PORT_HTTP || 8080; // HTTP Port
+const HTTP_PORT = process.env.PORT_HTTP || 8080; 
 
 
 // >>>>>>>>>>>>>>>>>> HTTPS >>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -115,10 +115,11 @@ const startServer = async () => {
     // Start HTTPS server
     await https_server.listen({ host: IP, port: PORT });
     console.log(`HTTPS Server running at https://${IP}:${PORT}`);
-
+    console.log(`Websocket Server running at wss://${IP}:${PORT}`);
     // Start HTTP server
     await http_server.listen({ host: IP, port: HTTP_PORT });
     console.log(`HTTP Server running at http://${IP}:${HTTP_PORT}`);
+
   } catch (err) {
     console.error(err);
     process.exit(1);
