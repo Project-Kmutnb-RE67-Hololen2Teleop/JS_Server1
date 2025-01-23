@@ -4,11 +4,9 @@ import { readFileSync } from 'fs';
 import { config } from 'dotenv';
 import sharp from 'sharp';
 import fs from 'fs';
-import SpeedRouter from './Routes/Speed.js';
-import PointCloudRouter from './Routes/pointcloud.js';
+import Routes_Registered from './Routes/All_ROutes.js';
 import { PostDataIMG } from './Routes/2Dimage.js';
-import ImagesStream from './Routes/2Dimage.js';
-import ControlJoint from './Routes/Manipulator.js';
+
 import fastifyCors from '@fastify/cors'; // Importing CORS plugin
 
 config(); // Load environment variables
@@ -19,8 +17,10 @@ const IP = process.env.HOST || '0.0.0.0';
 const PORT = process.env.PORT_MAIN || 11111;
 const HTTP_PORT = process.env.PORT_HTTP || 8080; // HTTP Port
 
-// Create Fastify server with HTTPS configuration
-const server = fastify({
+
+// >>>>>>>>>>>>>>>>>> HTTPS >>>>>>>>>>>>>>>>>>>>>>>>>>
+
+const https_server = fastify({
   http2: true,
   https: {
     allowHTTP1: true, // Support HTTP/1
@@ -33,7 +33,7 @@ const server = fastify({
 // WebSocket setup
 const wss = new WebSocketServer({ noServer: true });
 
-server.server.on('upgrade', (request, socket, head) => {
+https_server.server.on('upgrade', (request, socket, head) => {
   wss.handleUpgrade(request, socket, head, (ws) => {
     wss.emit('connection', ws, request);
   });
@@ -77,39 +77,47 @@ wss.on('connection', (ws) => {
   });
 });
 
-// Register routers
-server.register(SpeedRouter);
-server.register(PointCloudRouter);
-server.register(ImagesStream);
-server.register(ControlJoint);
+// <<<<<<<<<<<<<<<<<< HTTPS <<<<<<<<<<<<<<<<<<<<<<<<<<
 
-// Start Fastify server
+
+// >>>>>>>>>>>>>>>>>> HTTP >>>>>>>>>>>>>>>>>>>>>>>>>>
+
+const http_server = fastify();
+http_server.register(fastifyCors, {
+  origin: '*', // Allow all origins
+  methods: ['*'], // Allow all HTTP methods (GET, POST, OPTIONS, etc.)
+  allowedHeaders: ['*'], // Allow all headers (like Content-Type, Authorization, etc.)
+  preflightContinue: false, // Let Fastify handle OPTIONS requests automatically
+  optionsSuccessStatus: 204, // Successful OPTIONS request response status
+  exposedHeaders: ['Content-Type', 'Authorization'], // Expose headers to the client
+  credentials: true, // Allow cookies and credentials in cross-origin requests
+});
+
+
+// <<<<<<<<<<<<<<<<<< HTTP <<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+// >>>>>>>>>>>>>>>> Register routers >>>>>>>>>>>>>>>>>
+
+Routes_Registered(https_server)
+Routes_Registered(http_server)
+
+// <<<<<<<<<<<<<<<< Register routers <<<<<<<<<<<<<<<<<
+
+
+
+// >>>>>>>>>>>>>>>> Start Server >>>>>>>>>>>>>>>>>
+
 const startServer = async () => {
   try {
+
     // Start HTTPS server
-    await server.listen({ host: IP, port: PORT });
+    await https_server.listen({ host: IP, port: PORT });
     console.log(`HTTPS Server running at https://${IP}:${PORT}`);
 
-    // Create HTTP server for additional routes
-    const httpServer = fastify();
-    // Enable CORS with correct configuration
-    httpServer.register(fastifyCors, {
-      origin: '*', // Allow all origins
-      methods: ['*'], // Allow all HTTP methods (GET, POST, OPTIONS, etc.)
-      allowedHeaders: ['*'], // Allow all headers (like Content-Type, Authorization, etc.)
-      preflightContinue: false, // Let Fastify handle OPTIONS requests automatically
-      optionsSuccessStatus: 204, // Successful OPTIONS request response status
-      exposedHeaders: ['Content-Type', 'Authorization'], // Expose headers to the client
-      credentials: true, // Allow cookies and credentials in cross-origin requests
-    });
-
-    httpServer.register(SpeedRouter);
-    httpServer.register(PointCloudRouter);
-    httpServer.register(ImagesStream);
-    httpServer.register(ControlJoint);
-
     // Start HTTP server
-    await httpServer.listen({ host: IP, port: HTTP_PORT });
+    await http_server.listen({ host: IP, port: HTTP_PORT });
     console.log(`HTTP Server running at http://${IP}:${HTTP_PORT}`);
   } catch (err) {
     console.error(err);
@@ -118,3 +126,5 @@ const startServer = async () => {
 };
 
 startServer();
+
+// <<<<<<<<<<<<<<<< Start Server <<<<<<<<<<<<<<<<<
