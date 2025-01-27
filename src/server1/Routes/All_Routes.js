@@ -1,4 +1,4 @@
-import SpeedRouter from './Speed.js';
+import SpeedRouter from './speed.js';
 import PointCloudRouter from './pointcloud.js';
 import ImagesStream from './2Dimage.js';
 import ControlJoint from './Manipulator.js';
