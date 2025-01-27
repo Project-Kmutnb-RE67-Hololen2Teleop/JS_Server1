@@ -13,8 +13,8 @@ export default function SpeedRouter(fastify, options, done) {
     fastify.post('/Speed', async (request, reply) => {
         const data = request.body;
         console.log(`Status: ${reply.statusCode}`);
-        console.table(SpeedData)
         SpeedData = data;
+        console.table(SpeedData)
         return reply.send(SpeedData);
     });
 
