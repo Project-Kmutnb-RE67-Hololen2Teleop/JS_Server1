@@ -4,7 +4,7 @@ import { readFileSync } from 'fs';
 import { config } from 'dotenv';
 import sharp from 'sharp';
 import fs from 'fs';
-import Routes_Registered from './Routes/All_Routes.js';
+import Routes_Registered from './Routes/Router.js';
 import { PostDataIMG } from './Routes/2Dimage.js';
 
 import fastifyCors from '@fastify/cors'; // Importing CORS plugin
