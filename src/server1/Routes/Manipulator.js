@@ -51,6 +51,9 @@ export default function ControlJoint(fastify,options,done){
                 Coordinate.Rz = data.Rz
                 Coordinate.speed = data.speed
                 Coordinate.gripper = data.gripper
+                console.log(`Status-Manipulator: ${reply.statusCode}`);
+                console.table(Coordinate)
+                return reply.code(200).send({ message: 'Movement Axis set successfully' });
             default:
                 console.log('Missing Argument')
                 return reply.code(400).send({ error: 'Invalid mode specified' });
