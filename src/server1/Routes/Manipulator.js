@@ -44,8 +44,8 @@ export default function ControlJoint(fastify,options,done){
                 return reply.code(200).send({ message: 'Movement joint set successfully' });
             case 'setCoordinate':
                 Coordinate.X = data.X
-                Coordinate.Y = data.X
-                Coordinate.Z = data.X
+                Coordinate.Y = data.Y
+                Coordinate.Z = data.Z
                 Coordinate.Rx = data.Rx
                 Coordinate.Ry = data.Ry
                 Coordinate.Rz = data.Rz
