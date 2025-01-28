@@ -6,11 +6,20 @@ let Joint_all = {
     "j4":0.0,
     "j5":0.0,
     "j6":0.0,
-    "speed":0,
+    "speed":30,
     "gripper":true
 };
 
-
+let Coordinate = {
+    "X":0.0,
+    "Y":0.0,
+    "Z":0.0,
+    "Rx":0.0,
+    "Ry":0.0,
+    "Rz":0.0,
+    "speed":30,
+    "gripper":true
+}
 export default function ControlJoint(fastify,options,done){
     fastify.post('/set_Manipulator/:mode', async (request, reply) => {
         let Mode = request.params.mode;
@@ -33,6 +42,15 @@ export default function ControlJoint(fastify,options,done){
                 console.log(`Status-Manipulator: ${reply.statusCode}`);
                 console.table(Joint_all)
                 return reply.code(200).send({ message: 'Movement joint set successfully' });
+            case 'setCoordinate':
+                Coordinate.X = data.X
+                Coordinate.Y = data.X
+                Coordinate.Z = data.X
+                Coordinate.Rx = data.Rx
+                Coordinate.Ry = data.Ry
+                Coordinate.Rz = data.Rz
+                Coordinate.speed = data.speed
+                Coordinate.gripper = data.gripper
             default:
                 console.log('Missing Argument')
                 return reply.code(400).send({ error: 'Invalid mode specified' });
@@ -43,6 +61,10 @@ export default function ControlJoint(fastify,options,done){
     fastify.get('/get_Manipulator', async (request, reply) => {
         console.table(Joint_all);
         return reply.code(200).send(Joint_all);
+    });
+    fastify.get('/get_Manipulator/Coordinate', async (request, reply) => {
+        console.table(Coordinate);
+        return reply.code(200).send(Coordinate);
     });
     done()
 }
