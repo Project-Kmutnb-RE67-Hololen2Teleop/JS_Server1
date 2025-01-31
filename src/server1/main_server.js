@@ -3,10 +3,10 @@ import fastify from 'fastify';
 import { readFileSync } from 'fs';
 import { config } from 'dotenv';
 import sharp from 'sharp';
-import fs from 'fs';
+
 import Routes_Registered from './Routes/Router.js';
 import { PostDataIMG } from './Routes/2Dimage.js';
-
+import DeclareWebsocket from './Routes/websocket.js';
 import fastifyCors from '@fastify/cors'; // Importing CORS plugin
 
 config(); // Load environment variables
@@ -32,7 +32,8 @@ const https_server = fastify({
 
 // WebSocket setup
 const wss = new WebSocketServer({ noServer: true });
-
+const ws  = new WebSocketServer({ noServer: true });
+/*
 https_server.server.on('upgrade', (request, socket, head) => {
   wss.handleUpgrade(request, socket, head, (ws) => {
     wss.emit('connection', ws, request);
@@ -76,7 +77,7 @@ wss.on('connection', (ws) => {
     console.error('WebSocket error:', error);
   });
 });
-
+*/
 // <<<<<<<<<<<<<<<<<< HTTPS <<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
@@ -102,7 +103,8 @@ http_server.register(fastifyCors, {
 
 Routes_Registered(https_server)
 Routes_Registered(http_server)
-
+DeclareWebsocket(wss,https_server)
+DeclareWebsocket(ws,http_server)
 // <<<<<<<<<<<<<<<< Register routers <<<<<<<<<<<<<<<<<
 
 
