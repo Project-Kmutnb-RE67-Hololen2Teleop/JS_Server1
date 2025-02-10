@@ -10,7 +10,11 @@ if (!fs.existsSync(uploadDirectory)) {
 }
 
 export default function PointCloudRouter(fastify, options, done) {
-    fastify.register(fastifyMultipart)
+    fastify.register(fastifyMultipart, {
+        limits: {
+            fileSize: 0 // 0 means no limit
+        }
+    });
     // POST route for uploading files
     fastify.post('/PointCloud/upload', async (request, reply) => {
         const parts = request.parts(); // Retrieve the parts from the request (multipart form-data)
