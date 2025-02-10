@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-
+import fastifyMultipart from '@fastify/multipart';
 // Directory to save uploaded files
 let uploadDirectory = './Picture';
 
@@ -10,6 +10,7 @@ if (!fs.existsSync(uploadDirectory)) {
 }
 
 export default function PointCloudRouter(fastify, options, done) {
+    fastify.register(fastifyMultipart)
     // POST route for uploading files
     fastify.post('/PointCloud/upload', async (request, reply) => {
         const parts = request.parts(); // Retrieve the parts from the request (multipart form-data)
