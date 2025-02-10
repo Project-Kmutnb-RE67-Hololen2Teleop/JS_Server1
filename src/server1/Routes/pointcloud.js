@@ -3,24 +3,21 @@ import path from 'path';
 import fs from 'fs';
 import fastifyMultipart from '@fastify/multipart';
 
-const fastify = Fastify();
 
-// Register multipart plugin globally before defining routes
-fastify.register(fastifyMultipart, {
-    limits: {
-        fileSize: 0 // No limit (infinite upload size)
-    }
-});
+
+
 
 // Directory to save uploaded files
 const uploadDirectory = './Picture';
 
-// Ensure the upload directory exists
-if (!fs.existsSync(uploadDirectory)) {
-    fs.mkdirSync(uploadDirectory, { recursive: true });
-}
 
 export default function PointCloudRouter(fastify, options, done) {
+    // Register multipart plugin globally before defining routes
+    fastify.register(fastifyMultipart, {
+        limits: {
+            fileSize: 0 // No limit (infinite upload size)
+        }
+    });
     // ✅ POST route for uploading files
     fastify.post('/PointCloud/upload', async (request, reply) => {
         try {
