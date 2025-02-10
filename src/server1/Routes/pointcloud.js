@@ -13,9 +13,15 @@ const uploadDirectory = './Picture';
 
 export default function PointCloudRouter(fastify, options, done) {
     // Register multipart plugin globally before defining routes
+    // Register multipart plugin with unlimited size settings
     fastify.register(fastifyMultipart, {
         limits: {
-            fileSize: 0 // No limit (infinite upload size)
+            fieldNameSize: 100, // Default 100 bytes (increase if needed)
+            fieldSize: 0, // No limit on individual field sizes
+            fields: 0, // No limit on the number of fields
+            fileSize: Number.MAX_SAFE_INTEGER, // Effectively unlimited
+            files: 0, // No limit on the number of files
+            headerPairs: 2000 // Avoids header field limit issues
         }
     });
     // ✅ POST route for uploading files
