@@ -1,3 +1,4 @@
+// NOT USED
 let currentImageBuffer = null ; 
 
 export function PostDataIMG(Buffering){

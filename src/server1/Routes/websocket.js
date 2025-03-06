@@ -1,3 +1,4 @@
+//NOT USED
 import { PostDataIMG } from "./2Dimage.js";
 import fs from 'fs';
 export default function DeclareWebsocket(variables , Portocol){

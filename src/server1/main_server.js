@@ -31,53 +31,9 @@ const https_server = fastify({
 
 
 // WebSocket setup
-const wss = new WebSocketServer({ noServer: true });
-const ws  = new WebSocketServer({ noServer: true });
-/*
-https_server.server.on('upgrade', (request, socket, head) => {
-  wss.handleUpgrade(request, socket, head, (ws) => {
-    wss.emit('connection', ws, request);
-  });
-});
+//const wss = new WebSocketServer({ noServer: true });
+//const ws  = new WebSocketServer({ noServer: true });
 
-// Handle WebSocket connections
-wss.on('connection', (ws) => {
-  console.log('WebSocket client connected');
-
-  let buffer = Buffer.alloc(0); // To store incoming data
-  let expectedSize = null; // Expected size of data (image)
-
-  ws.on('message', (data) => {
-    if (expectedSize === null) {
-      // Read image size (first 4 bytes)
-      expectedSize = data.readUInt32BE(0);
-      console.log(`Expecting image of size: ${expectedSize} bytes`);
-    } else {
-      buffer = Buffer.concat([buffer, data]);
-      
-      // Check if the complete image data is received
-      if (buffer.length >= expectedSize) {
-        console.log(`Image received! Size: ${buffer.length} bytes`);
-        PostDataIMG(buffer); // Process image data
-        const fileName = 'image.jpg';
-        fs.writeFileSync(fileName, buffer); // Save the image
-        
-        // Reset buffer and expected size
-        buffer = Buffer.alloc(0);
-        expectedSize = null;
-      }
-    }
-  });
-
-  ws.on('close', () => {
-    console.log('WebSocket client disconnected');
-  });
-
-  ws.on('error', (error) => {
-    console.error('WebSocket error:', error);
-  });
-});
-*/
 // <<<<<<<<<<<<<<<<<< HTTPS <<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
@@ -103,8 +59,8 @@ http_server.register(fastifyCors, {
 
 Routes_Registered(https_server)
 Routes_Registered(http_server)
-DeclareWebsocket(wss,https_server)
-DeclareWebsocket(ws,http_server)
+//DeclareWebsocket(wss,https_server)
+//DeclareWebsocket(ws,http_server)
 // <<<<<<<<<<<<<<<< Register routers <<<<<<<<<<<<<<<<<
 
 
@@ -117,7 +73,7 @@ const startServer = async () => {
     // Start HTTPS server
     await https_server.listen({ host: IP, port: PORT });
     console.log(`HTTPS Server running at https://${IP}:${PORT}`);
-    console.log(`Websocket Server running at wss://${IP}:${PORT}`);
+    //console.log(`Websocket Server running at wss://${IP}:${PORT}`);
     // Start HTTP server
     await http_server.listen({ host: IP, port: HTTP_PORT });
     console.log(`HTTP Server running at http://${IP}:${HTTP_PORT}`);
