@@ -1,5 +1,13 @@
 node_modules/
 
+Picture/*
+!Picture/.gitkeep
+
+CSV/*
+!CSV/.gitkeep
+
 package-lock.json
 .env
 .DS_Store
+*.jpg
+
