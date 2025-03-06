@@ -66,6 +66,21 @@ export default function UPLOAD_FILES(fastify,options,done){
         }
     });
     
-    
+    // ✅ GET route for downloading files
+    fastify.get('/download/csv/:filename', (request, reply) => {
+        const { filename } = request.params;
+        const filePath = path.join(DIR, filename);
+
+        if (!fs.existsSync(filePath)) {
+            return reply.status(404).send({ message: 'File not found' });
+        }
+
+        console.log('Successful transfer:', filePath);
+
+        return reply
+            .header('Content-Disposition', `attachment; filename=${filename}`)
+            .header('Content-Type', 'application/octet-stream')
+            .send(fs.createReadStream(filePath));
+    });
     done()
 }
