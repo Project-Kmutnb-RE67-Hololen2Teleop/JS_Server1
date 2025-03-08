@@ -1,10 +1,11 @@
 
 
 let VIRTUAL_FRAME_LOCATION_OBJ = {
-    "BLUE":[],
-    "GREEN":[],
-    "YELLOW":[]
-}
+    "BLUE":[240,118,15],    //DEFAULT TESTING DATA
+    "GREEN":[240,105,15],   //DEFAULT TESTING DATA
+    "YELLOW":[240,112,15]   //DEFAULT TESTING DATA
+} 
+
 export default function Location_Object(fasify,option,done){
     fasify.post("/object/update",async (request,reply)=>{
         let {BLUE , GREEN , YELLOW } = request.body;
