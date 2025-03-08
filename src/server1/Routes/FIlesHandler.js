@@ -1,11 +1,14 @@
 import path from 'path'
 import fs from 'fs'
 import fastifyMultipart from '@fastify/multipart'
-import { response } from 'express';
+
 
 
 const DIR = "./CSV"
 
+let STATUS = {
+    "trigger": false
+}
 export default function UPLOAD_FILES(fastify,options,done){
 
     fastify.register(fastifyMultipart, {
@@ -81,6 +84,17 @@ export default function UPLOAD_FILES(fastify,options,done){
             .header('Content-Disposition', `attachment; filename=${filename}`)
             .header('Content-Type', 'application/octet-stream')
             .send(fs.createReadStream(filePath));
+    });
+
+    fastify.post('/status/update',async (request,reply)=>{
+        let { trigger } = request.body ; 
+        STATUS.trigger = trigger ; 
+        console.log(`trigger status code : ${reply.statusCode}`);
+
+    });
+    
+    fastify.get('/status/current',async (request,reply)=>{
+        return reply.send(STATUS);
     });
     done()
 }
