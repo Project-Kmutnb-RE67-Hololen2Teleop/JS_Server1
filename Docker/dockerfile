@@ -1,0 +1,11 @@
+FROM node:22.11.0
+
+WORKDIR /app
+
+COPY ../ ./
+
+RUN npm install
+
+EXPOSE 12345
+
+CMD ["node" , "src/server1/main_server.js"]
