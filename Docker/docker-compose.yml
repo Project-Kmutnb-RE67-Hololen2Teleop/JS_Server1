@@ -7,7 +7,8 @@ services:
       dockerfile: Docker/Dockerfile  # Path to the Dockerfile inside the 'Docker' folder
     container_name: main_server  # Name of the container
     ports:
-      - "12345:12345"  # Maps port 12345 inside the container to port 12345 on the host machine
+      - "12345:12345"  # Maps port 12345 inside the container to port 12345 on the host machine (HTTPS)
+      - "54321:54321"  # Maps port 54321 inside the container to port 54321 on the host machine (HTTP)
     volumes:
       - ../:/app  # Mounts your project directory (parent folder) to /app in the container
       - /app/node_modules  # Ensures node_modules is kept separate and not overwritten by volume mount

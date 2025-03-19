@@ -7,5 +7,6 @@ COPY ../ ./
 RUN npm install
 
 EXPOSE 12345
+EXPOSE 54321
 
 CMD ["node" , "src/server1/main_server.js"]
