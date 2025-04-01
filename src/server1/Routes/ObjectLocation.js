@@ -17,7 +17,7 @@ export default function Location_Object(fasify,option,done){
 
     });
     fasify.get("/object/current",async (request,reply)=>{
-        console.log("send current location successed")
+        console.log("send current object location successed")
         return reply.send(VIRTUAL_FRAME_LOCATION_OBJ)
     });
     done();
