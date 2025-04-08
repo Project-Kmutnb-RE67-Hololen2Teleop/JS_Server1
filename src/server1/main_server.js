@@ -2,11 +2,9 @@ import { WebSocketServer } from 'ws';
 import fastify from 'fastify';
 import { readFileSync } from 'fs';
 import { config } from 'dotenv';
-import sharp from 'sharp';
 
 import Routes_Registered from './Routes/Router.js';
-import { PostDataIMG } from './Routes/2Dimage.js';
-import DeclareWebsocket from './Routes/websocket.js';
+
 import fastifyCors from '@fastify/cors'; // Importing CORS plugin
 
 config(); // Load environment variables
