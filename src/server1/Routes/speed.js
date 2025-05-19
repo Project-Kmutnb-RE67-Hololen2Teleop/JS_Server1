@@ -3,8 +3,10 @@
 let SpeedData = {
     "velocity" : {
         "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
+        "y": 0.0
+    },
+    "Angular":{
+        "z":0.0
     }
 }
 
