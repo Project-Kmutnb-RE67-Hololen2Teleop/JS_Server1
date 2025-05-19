@@ -1,7 +1,7 @@
 // routes/SpeedRouter.js
 
 let SpeedData = {
-    "velocity" : {
+    "Velocity" : {
         "x": 0.0,
         "y": 0.0
     },
@@ -13,9 +13,12 @@ let SpeedData = {
 export default function SpeedRouter(fastify, options, done) {
     // POST route to update speed data
     fastify.post('/Speed', async (request, reply) => {
-        const data = request.body;
+        //const data = request.body;
+        let { Velocity ,Angular } = request.body ;
+        SpeedData.Velocity.x = Velocity.x ; 
+        SpeedData.Velocity.y = Velocity.y ; 
+        SpeedData.Angular.z = Angular.z ;
         console.log(`Status: ${reply.statusCode}`);
-        SpeedData = data;
         console.table(SpeedData)
         return reply.send(SpeedData);
     });
