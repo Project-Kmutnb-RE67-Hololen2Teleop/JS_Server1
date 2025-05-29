@@ -14,6 +14,9 @@ let CMD_POSE = {
     "STATUS":false
 }
 
+let START_STATE = {
+    "STATE":null
+}
 export default function MobilePose(fastify,options,done){
     // MARK:   HOLOLENS MOBILE ROBOT MOVEMENT 
 
@@ -52,6 +55,17 @@ export default function MobilePose(fastify,options,done){
     
     fastify.get('/MyAGV/status/current',async (request,reply)=>{
         return reply.send({"STATUS":CMD_POSE.STATUS});
+    });
+    // MARK:    Status Start
+
+    fastify.post("/MyAGV/StartState",async (request,reply)=>{
+        let {STATE} = request.body;
+        START_STATE.STATE = STATE ; 
+        console.log("Mobile robot Operated")
+        return reply.send(reply.statusCode)
+    });
+    fastify.get("/MyAGV/checkstate",async (request,reply)=>{
+        return reply.send({"STATE":START_STATE.STATE});
     });
     done();
 }
