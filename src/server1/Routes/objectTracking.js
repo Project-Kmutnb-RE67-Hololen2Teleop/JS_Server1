@@ -6,12 +6,13 @@ let OBJ = {
     "Rx":0.0,
     "Ry":0.0,
     "Rz":0.0,
-    "first_piority":false
+    "first_piority":false,
+    "type_piority":None
 }
 
 export default function objectTracking(fasify,option,done){
     fasify.post("/object/tracking/update",async (request,reply)=>{
-        let { x, y, z, Rx, Ry, Rz ,first_piority} = request.body;
+        let { x, y, z, Rx, Ry, Rz ,first_piority , type_piority} = request.body;
         OBJ.x = x ;
         OBJ.y = y ;
         OBJ.z = z ;
@@ -19,6 +20,7 @@ export default function objectTracking(fasify,option,done){
         OBJ.Ry = Ry ;
         OBJ.Rz = Rz ;
         OBJ.first_piority = first_piority;
+        OBJ.type_piority = type_piorityv ; 
         console.log("object tracking Updated")
         return reply.send(reply.statusCode)
     })
