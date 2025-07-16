@@ -7,7 +7,7 @@ let OBJ = {
     "Ry":0.0,
     "Rz":0.0,
     "first_piority":false,
-    "type_piority":None
+    "type_piority":null
 }
 
 export default function objectTracking(fasify,option,done){
