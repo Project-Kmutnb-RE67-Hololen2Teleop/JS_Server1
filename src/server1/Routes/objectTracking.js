@@ -20,7 +20,7 @@ export default function objectTracking(fasify,option,done){
         OBJ.Ry = Ry ;
         OBJ.Rz = Rz ;
         OBJ.first_piority = first_piority;
-        OBJ.type_piority = type_piorityv ; 
+        OBJ.type_piority = type_piority ; 
         console.log("object tracking Updated")
         return reply.send(reply.statusCode)
     })
