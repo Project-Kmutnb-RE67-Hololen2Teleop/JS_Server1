@@ -1,5 +1,6 @@
 
 let OBJ = {
+    "ID": "aruco_1",
     "x":0.0,
     "y":0.0,
     "z":0.0,
@@ -12,7 +13,8 @@ let OBJ = {
 
 export default function objectTracking(fasify,option,done){
     fasify.post("/object/tracking/update",async (request,reply)=>{
-        let { x, y, z, Rx, Ry, Rz ,first_piority , type_piority} = request.body;
+        let { ID ,x, y, z, Rx, Ry, Rz ,first_piority , type_piority} = request.body;
+        OBJ.ID = ID ;
         OBJ.x = x ;
         OBJ.y = y ;
         OBJ.z = z ;
