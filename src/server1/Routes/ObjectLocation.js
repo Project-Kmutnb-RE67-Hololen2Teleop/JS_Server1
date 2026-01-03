@@ -1,17 +1,17 @@
 
 
 let VIRTUAL_FRAME_LOCATION_OBJ = {
-    "BLUE":[240,118,15],    //DEFAULT TESTING DATA
-    "GREEN":[240,105,15],   //DEFAULT TESTING DATA
-    "YELLOW":[240,112,15]   //DEFAULT TESTING DATA
+    "aruco_1":[240,118,15],    //DEFAULT TESTING DATA
+    "aruco_2":[240,105,15],   //DEFAULT TESTING DATA
+    "aruco_3":[240,112,15]   //DEFAULT TESTING DATA
 } 
 
 export default function Location_Object(fasify,option,done){
     fasify.post("/object/update",async (request,reply)=>{
-        let {BLUE , GREEN , YELLOW } = request.body;
-        VIRTUAL_FRAME_LOCATION_OBJ.BLUE = BLUE ;
-        VIRTUAL_FRAME_LOCATION_OBJ.GREEN = GREEN ;
-        VIRTUAL_FRAME_LOCATION_OBJ.YELLOW = YELLOW ;
+        let { aruco_1 , aruco_2, aruco_3 } = request.body;
+        VIRTUAL_FRAME_LOCATION_OBJ.aruco_1 = aruco_1 ;
+        VIRTUAL_FRAME_LOCATION_OBJ.aruco_2 = aruco_2 ;
+        VIRTUAL_FRAME_LOCATION_OBJ.aruco_3 = aruco_3 ;
         console.log("object location Updated")
         return reply.send(reply.statusCode)
 
