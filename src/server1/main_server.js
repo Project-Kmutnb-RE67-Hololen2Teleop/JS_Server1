@@ -9,8 +9,8 @@ import fastifyCors from '@fastify/cors'; // Importing CORS plugin
 
 config(); // Load environment variables
 
-let frameCount = 0;
-let startTime = Date.now();
+// let frameCount = 0;
+// let startTime = Date.now();
 const IP = process.env.HOST || '0.0.0.0';
 const PORT = process.env.PORT_MAIN || 11111;
 const HTTP_PORT = process.env.PORT_HTTP || 8080; 
@@ -18,14 +18,14 @@ const HTTP_PORT = process.env.PORT_HTTP || 8080;
 
 // >>>>>>>>>>>>>>>>>> HTTPS >>>>>>>>>>>>>>>>>>>>>>>>>>
 
-const https_server = fastify({
-  http2: true,
-  https: {
-    allowHTTP1: true, // Support HTTP/1
-    key: readFileSync('./private.key'),
-    cert: readFileSync('./certificate.crt'),
-  },
-});
+// const https_server = fastify({
+//   http2: true,
+//   https: {
+//     allowHTTP1: true, // Support HTTP/1
+//     key: readFileSync('./private.key'),
+//     cert: readFileSync('./certificate.crt'),
+//   },
+// });
 
 
 // WebSocket setup
@@ -55,7 +55,7 @@ http_server.register(fastifyCors, {
 
 // >>>>>>>>>>>>>>>> Register routers >>>>>>>>>>>>>>>>>
 
-Routes_Registered(https_server)
+// Routes_Registered(https_server)
 Routes_Registered(http_server)
 //DeclareWebsocket(wss,https_server)
 //DeclareWebsocket(ws,http_server)
@@ -69,8 +69,8 @@ const startServer = async () => {
   try {
 
     // Start HTTPS server
-    await https_server.listen({ host: IP, port: PORT });
-    console.log(`HTTPS Server running at https://${IP}:${PORT}`);
+    // await https_server.listen({ host: IP, port: PORT });
+    // console.log(`HTTPS Server running at https://${IP}:${PORT}`);
     //console.log(`Websocket Server running at wss://${IP}:${PORT}`);
     // Start HTTP server
     await http_server.listen({ host: IP, port: HTTP_PORT });
