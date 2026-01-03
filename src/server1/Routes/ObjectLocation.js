@@ -1,9 +1,9 @@
 
 
 let VIRTUAL_FRAME_LOCATION_OBJ = {
-    "aruco_1":[240,118,15],    //DEFAULT TESTING DATA
-    "aruco_2":[240,105,15],   //DEFAULT TESTING DATA
-    "aruco_3":[240,112,15]   //DEFAULT TESTING DATA
+    "aruco_1":[240,118,15,0,0,0],    //DEFAULT TESTING DATA
+    "aruco_2":[240,105,15,0,0,0],   //DEFAULT TESTING DATA
+    "aruco_3":[240,112,15,0,0,0]   //DEFAULT TESTING DATA
 } 
 
 export default function Location_Object(fasify,option,done){
